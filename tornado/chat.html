@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+<body>
+
+<h2>ChatRoom</h2>
+<p>Username: {{username}}</p>
+<div style="width:400px; height:300px; border:1px solid gray;">
+    <div id="content1"></div>
+</div>
+<br>
+<input type="text" id="msg">
+<input type="button" id="send" value="send">
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+
+<script>
+    //连接WebSocket服务器
+    let ws = new WebSocket('ws://localhost:8000/chat/messageserver/');
+    // 发送消息给服务器
+    $('#send').click(function () {
+        let message = $('#msg').val();
+        ws.send(message);
+    });
+    // 接收服务器的消息
+    ws.onmessage = function (e) {
+        $('#content1').append("<p>" + e.data + "</p>")
+    }
+</script>
+</body>
+</html>
