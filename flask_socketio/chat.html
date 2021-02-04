@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+<body>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+
+<h2>ChatRoom</h2>
+<p>Username: {{username}}</p>
+<div style="width:400px; height:300px; border:1px solid gray;">
+    <div id="content1"></div>
+</div>
+<br>
+<input type="text" id="msg">
+<input type="button" id="send" value="send">
+
+<script type="text/javascript" charset="utf-8">
+    // 连接SocketIO服务器
+    var socket1 = io.connect("http://10.30.30.101:9000/chat");
+    // 发送消息给服务器
+    $('#send').click(function () {
+        var sendmsg = $('#msg').val();
+        alert(sendmsg);
+        // socket1.send(sendmsg);
+        // socket1.emit(sendmsg);
+        // socket1.emit('message', sendmsg);
+        socket1.emit('message', {data: sendmsg});
+        $('#msg').val('');
+    });
+    // 接收服务器的消息
+    socket1.on('message', function(recvmsg) {
+        $('#content1').append("<p>" + recvmsg + "</p>")
+    })
+</script>
+
+</body>
+</html>
+
