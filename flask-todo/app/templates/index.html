@@ -13,12 +13,14 @@
     {% endfor %}
     <div>
         <h2>Todo List</h2>
+        {% if todos %}
             <table class="table">
                 <thead>
                     <tr>
                         <th>content</th>
                         <th>status</th>
                         <th>time</th>
+                        <th>operate</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,10 +34,21 @@
                                     未完成
                                 {% endif %}
                             </td>
-                            <td>{{ todo.time }}</td>
+                            <td>{{ todo.time.strftime("%Y-%m-%d %H:%M") }}</td>
+                            <td>
+                                {% if todo.status == 0 %}
+                                    <a href="/done/{{ todo.id }}" class="btn btn-primary">Done</a>
+                                {% else %}
+                                    <a href="/undone/{{ todo.id }}" class="btn btn-primary">Undone</a>
+                                {% endif %}
+                            </td>
+                            <td><a href="/delete/{{ todo.id }}" class="btn btn-danger">Delete</a></td>
                         </tr>
                     {% endfor %}
                 </tbody>
-             </table>
+            </table>
+        {% else %}
+            <h3 class="text-info">No todos, please add.</h3>
+        {% endif %}
     </div>
 {% endblock %}

@@ -1,0 +1,46 @@
+memo of unittest
+
+1. unittest is preinstalled
+2. manual install coverage within venv
+(venv) pip3 install coverage
+
+----example output----
+
+(venv) [root@node1 flask-todo]# python3 -m unittest discover
+==set up==
+==test index==
+==tear down==
+.==set up==
+==test todo==
+==tear down==
+.
+----------------------------------------------------------------------
+Ran 2 tests in 0.038s
+
+OK
+(venv) [root@node1 flask-todo]# 
+(venv) [root@node1 flask-todo]# coverage run -m unittest discover
+==set up==
+==test index==
+==tear down==
+.==set up==
+==test todo==
+==tear down==
+.
+----------------------------------------------------------------------
+Ran 2 tests in 0.056s
+
+OK
+(venv) [root@node1 flask-todo]# 
+(venv) [root@node1 flask-todo]# coverage report --omit="*venv*"
+Name                  Stmts   Miss  Cover
+-----------------------------------------
+app/__init__              6      0   100%
+app/models               31      6    81%
+app/views                40     16    60%
+config                    4      0   100%
+test/__init__             0      0   100%
+test/test_todo           21      0   100%
+-----------------------------------------
+TOTAL                   102     22    78%
+(venv) [root@node1 flask-todo]# 
