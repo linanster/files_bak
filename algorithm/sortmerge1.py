@@ -1,12 +1,5 @@
-# 归并排序
-def mergeSort(seq): 
-    if len(seq) <= 1:
-        return seq
-    mid = len(seq)//2
-    left = seq[:mid]
-    right = seq[mid:]
-    return merge(mergeSort(left), mergeSort(right))
-
+# 归并排序(递归, out-place)
+#
 def merge(left, right):
     result = []
     while left and right:
@@ -20,7 +13,15 @@ def merge(left, right):
         result.append(right.pop(0))
     return result
 
-seq = [2,4,3,5,1]
+def mergeSort(seq): 
+    if len(seq) <= 1:
+        return seq
+    mid = len(seq)//2
+    left = seq[:mid]
+    right = seq[mid:]
+    return merge(mergeSort(left), mergeSort(right))
+
+seq = [9,8,7,6,5,4,3,2,1,0]
 
 print(mergeSort(seq))
 

@@ -5,7 +5,7 @@ def bubbleSort(seq):
             if seq[j] > seq[j+1]:
                 seq[j], seq[j+1] = seq[j+1], seq[j]
 
-seq = [2,4,3,5,1]
+seq = [9,8,7,6,5,4,3,2,1,0]
 
 bubbleSort(seq)
 print(seq)

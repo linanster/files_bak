@@ -19,6 +19,6 @@ def bisearch(seq, lower, upper, num):
             return bisearch(seq, mid+1, upper, num)
 
 
-l1 = [0,1,2,3,4,5]
+l1 = [0,1,2,3,4,5,6,7,8,9]
 
 print(bisearch(l1, 0, len(l1)-1, 3))
