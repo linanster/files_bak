@@ -14,14 +14,13 @@ def merge(left, right):
     return result
 
 def mergeSort(seq): 
-    group = 2
-    while group < len(seq)*2:
-        for i in range(0, len(seq), group):
-            left = seq[i : i+group//2]
-            right = seq[i+group//2 : i+group]
-            seq[i:i+group] = merge(left, right)
-        group *= 2
-        # print(seq)
+    groupLen = 2
+    while groupLen < len(seq)*2:
+        for i in range(0, len(seq), groupLen):
+            left = seq[i : i+groupLen//2]
+            right = seq[i+groupLen//2 : i+groupLen]
+            seq[i:i+groupLen] = merge(left, right)
+        groupLen *= 2
 
 seq = [9,8,7,6,5,4,3,2,1,0]
 mergeSort(seq)

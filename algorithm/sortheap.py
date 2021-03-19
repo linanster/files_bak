@@ -25,11 +25,9 @@ def buildMaxHeap(seq, seqLen):
 
 # 堆排序
 def heapSort(seq):
-    seqLen = len(seq)
-    while seqLen > 0:
-        buildMaxHeap(seq, seqLen)
-        seq[0], seq[seqLen-1] = seq[seqLen-1], seq[0]
-        seqLen -= 1
+    for subLen in range(len(seq), 1, -1):
+        buildMaxHeap(seq, subLen)
+        seq[0], seq[subLen-1] = seq[subLen-1], seq[0]
 
 seq = [1, 3, 4, 5, 2, 6, 9, 7, 8, 0]
 heapSort(seq)
