@@ -3,7 +3,8 @@
 #
 def bucketSort(seq):
     maxValue = max(seq)
-    bucket = {i:[] for i in range(int(maxValue)+1)}
+    bucketLen = int(maxValue)+1
+    bucket = {i:[] for i in range(bucketLen)}
     for i in seq:
         bucket[int(i)].append(i)
     seq.clear()

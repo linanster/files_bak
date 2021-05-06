@@ -1,7 +1,8 @@
 # 计数排序
 #
 def countingSort(seq):
-    countLen = max(seq)+1
+    maxValue = max(seq)
+    countLen = maxValue + 1
     count = [0 for _ in range(countLen)]
     for i in seq:
         count[i]+=1
