@@ -3,38 +3,37 @@
 import socket
 import time
 
+# 1. Start Connection
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(('10.30.30.101', 4000))
+s.connect(('47.101.215.138', 4080))
+print('==Connection Established==')
 print(s)
 
-req_line1 = "GET /index HTTP/1.1\r\n"
-# req_line2 = "Host: 10.30.30.101:4000\r\n"
-req_line2 = "Host: 47.101.215.138:4000\r\n"
-req_line3 = "Connection:keep-alive\r\n"
-req_line4 = "\r\n"
-req_raw = req_line1 + req_line2 +req_line3 + req_line4
+# 2. Send Request
+line1= "GET /index/ HTTP/1.1\r\n"
+line2 = "Host: 47.101.215.138:4080\r\n"
+line3 = "Connection: close\r\n"
+line4 = "User-Agent: MyShell\r\n"
+endline = "\r\n"
 
-print(req_raw)
+request_lines = [line1, line2, line3, line4, endline]
 
 
-# time.sleep(2)
+print('==Http Send:==')
+for line in request_lines:
+    s.send(line.encode('utf8'))
+    print(line, end='')
+    time.sleep(1)
+    # time.sleep(20)
 
-for i in range(1):
-    print('=={}=='.format(i))
-    s.send(req_raw.encode('utf8'))
-    
-    data = b''
-    while True:
-        d = s.recv(1024)
-        if d:
-            data += d
-        else:
-            break
-    
-    data = data.decode("utf-8")
-    print(data)
-    # html_data = data.split("\r\n\r\n")[1]
-    # print(html_data)
+# 3. Receive Response
+print('==Http Received:==')
+while True:
+    response = s.recv(1024)
+    if response:
+        print(response.decode('utf8'))
+    else:
+        break
 
 s.close()
 
