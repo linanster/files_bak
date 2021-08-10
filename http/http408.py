@@ -10,7 +10,7 @@ print('==Connection Established==')
 print(s)
 
 # 2. Send Request
-line1= "GET /index/ HTTP/1.1\r\n"
+line1= "GET /index1/ HTTP/1.1\r\n"
 line2 = "Host: 47.101.215.138:4080\r\n"
 line3 = "Connection: close\r\n"
 line4 = "User-Agent: MyShell\r\n"
@@ -23,8 +23,8 @@ print('==Http Send:==')
 for line in request_lines:
     s.send(line.encode('utf8'))
     print(line, end='')
-    time.sleep(1)
-    # time.sleep(20)
+    # time.sleep(1)
+    time.sleep(20)
 
 # 3. Receive Response
 print('==Http Received:==')
