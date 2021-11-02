@@ -51,6 +51,7 @@ device_type_table = '''
 |  138 | 0x8A     | Full color BR30                       |
 |  139 | 0x8B     | Full Color Light Strip                |
 |  140 | 0x8C     | Cync Dule Mode Full color PAR38       |
+|  224 | 0xE0     | Thermostat                            |
 +------+----------+---------------------------------------+
-
 '''
+

@@ -15,12 +15,15 @@ welcome = '''
 '''
 
 menu = '''
-Menu
+MENU
 ====
-1) Use Case 1: Query Devices for Specific Account 
-2) Use Case 2: Todo...
+1) Use Case 1: Query Device Info by Account 
+2) Use Case 2: Caculate Total Count by Device Type
 3) Use Case 3: Todo...
-4) Help1: Print Device Type Table
+4) Use Case 4: Todo...
+5) Use Case 5: Todo...
+6) Help1: Query Raw Data by Account
+7) Help2: Print Device Type Table
 q) Quit
 ====
 '''
@@ -28,13 +31,37 @@ q) Quit
 def option1():
     email = input('Please input account email: ') or 'arossoll@wowway.com'
     print('')
+    if email == 'return':
+        return
     mongo_cook.find_subscribed_devices_by_email(email)
 
 def option2():
-    print('do option2')
+    device_type_raw = input('Input device types(seperated by comma, or null for all): ')
+    print('')
+    if email == 'return':
+        return
+    if device_type_raw == '':
+        device_type_list = None
+    else:
+        device_type_list = [int(x) for x in device_type_raw.split(',')]
+    mongo_cook.aggregate_device_type(device_type_list)
+
+
 def option3():
-    print('do option3')
+    print('todo')
 def option4():
+    print('todo')
+def option5():
+    print('todo')
+
+def option6():
+    email = input('Please input account email: ') or 'arossoll@wowway.com'
+    print('')
+    if email == 'return':
+        return
+    mongo_cook.print_raw_data_by_email(email)
+
+def option7():
     print(device_type_table)
 
 def option_quit():
@@ -45,6 +72,9 @@ options = {
     '2': option2,
     '3': option3,
     '4': option4,
+    '5': option5,
+    '6': option6,
+    '7': option7,
     'q': option_quit
 }
 

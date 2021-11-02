@@ -165,7 +165,7 @@ def get_conn_input():
     ipaddr = input('  IP Address[10.128.224.34]: ') or '10.128.224.34'
     port = input('  Port[27017]: ') or '27017'
     username = input('  Username[nan.li]: ') or 'nan.li'
-    passwd = getpass.getpass('  Password: ') or 'm0ngDB'
+    passwd = getpass.getpass('  Password: ')
     return ipaddr, port, username, passwd
 
 # copy from main.py
