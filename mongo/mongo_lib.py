@@ -1,10 +1,13 @@
 #! /usr/bin/env python3
 #
 import sys
+import os
 import pymongo
 import getpass
 import json
+import csv
 import prettytable as pt
+from datetime import datetime
 
 print('Interpreter: {}'.format(sys.executable))
 
@@ -46,10 +49,14 @@ class MongoCook(object):
         self.collection_user = client['xlink']['user']
         self.collection_device = client['xlink']['device']
         self.collection_subscribe = client['xlink']['subscribe']
+        self.raw_users_all = None
         self.raw_users = None
         self.raw_devices = None
         self.raw_subscribes = None
         self.user = None
+
+    def find_raw_users_all(self):
+        self.raw_users_all = self.collection_user.find({})
 
     def find_raw_data_by_email(self, email):
         self.raw_users = self.collection_user.find({'email':email})
@@ -145,6 +152,37 @@ class MongoCook(object):
             print(data)
             print('++++')
 
+    def save_users_to_csv(self):
+        self.find_raw_users_all()
+        # total rows limit
+        Total = 1000
+        # flush file writing every partition
+        Partition = 100
+        filename = 'users_{}.csv'.format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
+        f = open(filename, 'w')
+        print('== start extracting to file {} =='.format(filename))
+        writer = csv.writer(f)
+        head = ['#', 'user_id', 'email', 'create_date']
+        writer.writerow(head)
+        index = 1
+        for data in self.raw_users_all:
+            row = [index, data.get('_id'), data.get('email'), data.get('create_date').strftime('%Y-%m-%d %H:%M:%S')]
+            writer.writerow(row)
+            if index % Partition == 0:
+                f.flush()
+                print('\r', index, end='', flush=True)
+            if index >= Total:
+                f.flush()
+                break
+            index += 1
+        f.close()
+        print('\n== done ==')
+
+        def save_sol_users_to_csv(self):
+            self.find_raw_users_all()
+            pass
+
+            
 
 
 class MongoDish(object):
@@ -165,7 +203,7 @@ def get_conn_input():
     ipaddr = input('  IP Address[10.128.224.34]: ') or '10.128.224.34'
     port = input('  Port[27017]: ') or '27017'
     username = input('  Username[nan.li]: ') or 'nan.li'
-    passwd = getpass.getpass('  Password: ') or 'm0ngDB'
+    passwd = getpass.getpass('  Password: ') or 'm0ngoDB'
     return ipaddr, port, username, passwd
 
 # copy from main.py
@@ -180,20 +218,6 @@ welcome = '''
                       __/ |                                        
                      |___/                                         
 
-'''
-
-menu = '''
-MENU
-====
-1) Use Case 1: Query Device Info by Account 
-2) Use Case 2: Caculate Total Count by Device Type
-3) Use Case 3: Todo...
-4) Use Case 4: Todo...
-5) Use Case 5: Todo...
-6) Help1: Query Raw Data by Account
-7) Help2: Print Device Type Table
-q) Quit
-====
 '''
 
 device_type_table = '''
@@ -253,36 +277,51 @@ device_type_table = '''
 +------+----------+---------------------------------------+
 '''
 
+menu = '''
+MENU
+====
+1) Use Case 1: query device info by account 
+2) Use Case 2: aggregate device type
+3) Use Case 3: export all users list in csv format
+4) Use Case 4: Todo...
+5) Use Case 5: Todo...
+6) Help1: query raw data by account
+7) Help2: print device type table
+q) Quit
+====
+'''
+
 def option1():
-    email = input('Please input account email: ') or 'arossoll@wowway.com'
+    input1 = input('Please input account email: ') or 'arossoll@wowway.com'
     print('')
-    if email == 'return':
+    if input1 == 'return':
         return
-    mongo_cook.find_subscribed_devices_by_email(email)
+    mongo_cook.find_subscribed_devices_by_email(input1)
 
 def option2():
-    device_type_raw = input('Input device types(seperated by comma, or null for all): ')
+    input1 = input('Input device types(seperated by comma, or null for all): ')
     print('')
-    if device_type_raw == 'return':
+    if input1 == 'return':
         return
-    if device_type_raw == '':
+    if input == '':
         device_type_list = None
     else:
-        device_type_list = [int(x) for x in device_type_raw.split(',')]
+        device_type_list = [int(x) for x in input1.split(',')]
     mongo_cook.aggregate_device_type(device_type_list)
 
 
 def option3():
-    print('todo')
+    mongo_cook.save_users_to_csv()
+
 def option4():
     print('todo')
 def option5():
     print('todo')
 
 def option6():
-    email = input('Please input account email: ') or 'arossoll@wowway.com'
+    input1 = input('Please input account email: ') or 'arossoll@wowway.com'
     print('')
-    if email == 'return':
+    if input1 == 'return':
         return
     mongo_cook.print_raw_data_by_email(email)
 
